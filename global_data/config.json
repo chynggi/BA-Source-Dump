@@ -6,8 +6,8 @@
     "min_build_version": "1.85.395772",
     "min_build_number": "395772",
     "patch": {
-        "patch_version": 1557,
-        "resource_path": "https://ba.dn.nexoncdn.co.kr/com.nexon.bluearchive/4e524dca41e444c4/resource-data.json",
+        "patch_version": 1566,
+        "resource_path": "https://ba.dn.nexoncdn.co.kr/com.nexon.bluearchive/5b343fa50f55403c/resource-data.json",
         "bdiff_path": []
     }
 }
