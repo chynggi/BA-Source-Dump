@@ -12303,14 +12303,15 @@ table VoiceTimelineExcel {
 table WebEventSeasonExcel {
 	Id: long; // index 0x1
 	Enabled: bool; // index 0x2
-	IsFull: bool; // index 0x3
-	UseExternalBrowser: bool; // index 0x4
-	StartDate: string; // index 0x5
-	EndDate: string; // index 0x6
-	LobbyBannerImage: string; // index 0x7
-	PopupTitleLocalizeKey: string; // index 0x8
-	StageEventUrl: string; // index 0x9
-	LiveEventUrl: string; // index 0xA
+	IconOrder: long; // index 0x3
+	IsFull: bool; // index 0x4
+	UseExternalBrowser: bool; // index 0x5
+	StartDate: string; // index 0x6
+	EndDate: string; // index 0x7
+	LobbyBannerImage: string; // index 0x8
+	PopupTitleLocalizeKey: string; // index 0x9
+	StageEventUrl: string; // index 0xA
+	LiveEventUrl: string; // index 0xB
 }
 
 table WeekDungeonExcel {
