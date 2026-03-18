@@ -4539,7 +4539,8 @@ enum ScenarioCharacterShapes : int {
 	BlackSilhouette = 2,
 	Closeup = 4,
 	Highlight = 8,
-	WhiteSilhouette = 16
+	WhiteSilhouette = 16,
+	Glitch = 32
 }
 
 enum Anniversary : int {
@@ -5692,6 +5693,11 @@ enum ProductTagType : int {
 	Monthly = 0,
 	Weekly = 1,
 	Biweekly = 2
+}
+
+enum ProductSelectSubType : int {
+	Select = 0,
+	AutoSelect = 1
 }
 
 enum ScenarioBGScroll : int {
@@ -11566,6 +11572,16 @@ table PresetParcelsExcel {
 	ParcelAmount: long; // index 0x4
 }
 
+table ProductAutoSelectionGroupExcel {
+	ProductAutoSelectionGroupId: long; // index 0x1
+	CharacterId: long; // index 0x2
+	RewardParcelType: [ParcelType]; // index 0x3
+	RewardParcelId: [long]; // index 0x4
+	ResultAmount: [long]; // index 0x5
+	ConditionParcelType: ParcelType; // index 0x6
+	ConditionParcelId: long; // index 0x7
+}
+
 table ProductBattlePassExcel {
 	Id: long; // index 0x1
 	ProductId: string; // index 0x2
@@ -11639,16 +11655,17 @@ table ProductMonthlyExcel {
 
 table ProductSelectExcel {
 	Id: long; // index 0x1
-	ProductId: string; // index 0x2
-	StoreType: StoreType; // index 0x3
-	Price: long; // index 0x4
-	PriceReference: string; // index 0x5
-	PurchasePeriodType: PurchasePeriodType; // index 0x6
-	PurchasePeriodLimit: long; // index 0x7
-	ParcelType: [ParcelType]; // index 0x8
-	ParcelId: [long]; // index 0x9
-	ParcelAmount: [long]; // index 0xA
-	ProductSelectionSlot: [long]; // index 0xB
+	ProductSelectSubType: ProductSelectSubType; // index 0x2
+	ProductId: string; // index 0x3
+	StoreType: StoreType; // index 0x4
+	Price: long; // index 0x5
+	PriceReference: string; // index 0x6
+	PurchasePeriodType: PurchasePeriodType; // index 0x7
+	PurchasePeriodLimit: long; // index 0x8
+	ParcelType: [ParcelType]; // index 0x9
+	ParcelId: [long]; // index 0xA
+	ParcelAmount: [long]; // index 0xB
+	ProductSelectionSlot: [long]; // index 0xC
 }
 
 table ProductSelectionGroupExcel {
