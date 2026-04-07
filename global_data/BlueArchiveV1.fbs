@@ -355,7 +355,9 @@ enum ParcelType : int {
 	BattlePassExp = 25,
 	SelectedCharacter = 26,
 	UnSelectedCharacter = 27,
-	ProductBattlePass = 28
+	ProductBattlePass = 28,
+	ProductSelect = 29,
+	SNSPost = 30
 }
 
 enum StatType : int {
@@ -527,7 +529,11 @@ enum MailType : int {
 	ExpiryChangeCurrency = 27,
 	ExpiryBattlePassItem = 28,
 	FreeProductReward = 29,
-	ProductGooglePointReward = 30
+	ProductGooglePointReward = 30,
+	PCStoreProduct = 31,
+	ProductFreeReward = 32,
+	ProductBattlePass = 33,
+	ProductAttendance = 34
 }
 
 enum StarGoalType : int {
@@ -3970,7 +3976,8 @@ enum Club : int {
 	OccultClub = 52,
 	PrefectBrigade = 53,
 	FreeTradeCartel = 54,
-	NicomediasTroop = 55
+	NicomediasTroop = 55,
+	PublishingDepartment = 56
 }
 
 enum School : int {
@@ -4005,6 +4012,13 @@ enum AcademyMessageTypes : int {
 	None = 0,
 	Text = 1,
 	Image = 2
+}
+
+enum SpoilerPopupType : int {
+	None = 0,
+	Default = 1,
+	Warning = 2,
+	WarningNoGo = 3
 }
 
 enum ArenaRewardType : int {
@@ -4292,7 +4306,9 @@ enum MissionCompleteConditionType : int {
 	Reset_CCGSkillWithTagCount = 180,
 	Reset_CCGActivatePerkCount = 181,
 	Reset_ClearMultiFloorRaid = 182,
-	Reset_DayCompleteMission = 183
+	Reset_DayCompleteMission = 183,
+	Reset_ConcentrationCardMatchCount = 184,
+	Reset_ConcentrationClearCount = 185
 }
 
 enum Nation : int {
@@ -4363,7 +4379,8 @@ enum ShopCategoryType : int {
 	SelectPickupGacha = 35,
 	GemDaily = 36,
 	GemWeekly = 37,
-	CafeSummonTicket = 38
+	CafeSummonTicket = 38,
+	SelectPickupFesGacha = 39
 }
 
 enum BubbleType : int {
@@ -4817,7 +4834,8 @@ enum ItemCategory : int {
 	RecruitCoin = 7,
 	MonthlyBonus = 8,
 	InvisibleToken = 9,
-	BattlePass = 10
+	BattlePass = 10,
+	ProductSelect = 11
 }
 
 enum Difficulty : int {
@@ -4887,7 +4905,8 @@ enum EventContentItemType : int {
 	EventToken4 = 4,
 	EventToken5 = 5,
 	EventMeetUpTicket = 6,
-	EventEtcItem = 7
+	EventEtcItem = 7,
+	Concentration = 8
 }
 
 enum CollectionUnlockType : int {
@@ -4912,9 +4931,8 @@ enum MultipleConditionCheckType : int {
 
 enum ConcentrationRewardType : int {
 	None = 0,
-	CardOpen = 1,
-	PairMatch = 2,
-	RoundRenewal = 3
+	PairMatch = 1,
+	RoundRenewal = 2
 }
 
 enum ConcentrationVoiceCondition : int {
@@ -5539,7 +5557,9 @@ enum StoreType : int {
 	STEAM = 6,
 	FreeProduct = 7,
 	Twitch = 8,
-	Chzzk = 9
+	Chzzk = 9,
+	PaymentCenter = 10,
+	PCStore = 11
 }
 
 enum PurchasePeriodType : int {
@@ -5590,13 +5610,20 @@ enum ServiceActionType : int {
 	HardAdventurePlayCountRecover = 1
 }
 
+enum RecipeDisplayOptions : int {
+	None = 0,
+	Always = 1,
+	HideNoMaterials = 2
+}
+
 enum PurchaseSourceType : int {
 	None = 0,
 	Product = 1,
 	ProductMonthly = 2,
 	ProductBattlePass = 3,
 	ProductSelect = 4,
-	ProductGooglePoint = 5
+	ProductGooglePoint = 5,
+	ProductDailyRecord = 6
 }
 
 enum ProductCategory : int {
@@ -5607,7 +5634,8 @@ enum ProductCategory : int {
 	GachaDirect_DontUseGlobal = 4,
 	TimeLimit = 5,
 	BattlePass = 6,
-	GooglePoint = 7
+	GooglePoint = 7,
+	DailyRecord = 8
 }
 
 enum ProductDisplayTag : int {
@@ -5688,7 +5716,8 @@ enum GachaDisplayTag : int {
 	New = 5,
 	Fes = 6,
 	SelectRecruit = 7,
-	LimitedThreeStar = 8
+	LimitedThreeStar = 8,
+	Revival = 9
 }
 
 enum ShopPurchasePopupType : int {
@@ -5707,7 +5736,8 @@ enum ShopGroupType : int {
 	SecretStoneGrowth = 6,
 	TimeAttack = 7,
 	EliminateRaid = 8,
-	Gem = 9
+	Gem = 9,
+	Chaser = 10
 }
 
 enum ShortcutContentType : int {
@@ -6248,6 +6278,15 @@ table ConstConquestExcel {
 	AnimationUnitAmountMin: int; // index 0x4
 	AnimationUnitAmountMax: int; // index 0x5
 	AnimationUnitDelay: float; // index 0x6
+}
+
+table ConstContentsExcelTable {
+	DataList: [ConstContentsExcel]; // index 0x1
+}
+
+table ConstContentsExcel {
+	UseSearchFieldOptimize: bool; // index 0x1
+	SearchUpdateTime: float; // index 0x2
 }
 
 table ConstEventCommonExcelTable {
@@ -6880,14 +6919,15 @@ table KeyMappingExcelTable {
 table KeyMappingExcel {
 	Id: string; // index 0x1
 	TargetKeyCode: string; // index 0x2
-	isDisplay: bool; // index 0x3
-	isUsed: bool; // index 0x4
-	isLongPress: bool; // index 0x5
-	IgnorePosCheck: bool; // index 0x6
-	IconPositionX: float; // index 0x7
-	IconPositionY: float; // index 0x8
-	IconScaleX: float; // index 0x9
-	IconScaleY: float; // index 0xA
+	KeymappingIconBGName: string; // index 0x3
+	isDisplay: bool; // index 0x4
+	isUsed: bool; // index 0x5
+	isLongPress: bool; // index 0x6
+	IgnorePosCheck: bool; // index 0x7
+	IconPositionX: float; // index 0x8
+	IconPositionY: float; // index 0x9
+	IconScaleX: float; // index 0xA
+	IconScaleY: float; // index 0xB
 }
 
 table KeyMappingPopupExcelTable {
@@ -6896,22 +6936,8 @@ table KeyMappingPopupExcelTable {
 
 table KeyMappingPopupExcel {
 	PrefabName: string; // index 0x1
-	ButtonName01: string; // index 0x2
-	KeyMappingId01: string; // index 0x3
-	ButtonName02: string; // index 0x4
-	KeyMappingId02: string; // index 0x5
-	ButtonName03: string; // index 0x6
-	KeyMappingId03: string; // index 0x7
-	ButtonName04: string; // index 0x8
-	KeyMappingId04: string; // index 0x9
-	ButtonName05: string; // index 0xA
-	KeyMappingId05: string; // index 0xB
-	ButtonName06: string; // index 0xC
-	KeyMappingId06: string; // index 0xD
-	ButtonName07: string; // index 0xE
-	KeyMappingId07: string; // index 0xF
-	ButtonName08: string; // index 0x10
-	KeyMappingId08: string; // index 0x11
+	buttonName: [string]; // index 0x2
+	keyMappingId: [string]; // index 0x3
 }
 
 table KnockBackExcelTable {
@@ -7400,6 +7426,16 @@ table AccountLevelRewardExcel {
 	RewardParcelType: ParcelType; // index 0x3
 	RewardParcelId: long; // index 0x4
 	RewardParcelAmount: long; // index 0x5
+}
+
+table AlertPopupExcel {
+	Id: long; // index 0x1
+	CheckConfirmAble: bool; // index 0x2
+	SystemPopupTitle: uint; // index 0x3
+	SystemPopupDescription: uint; // index 0x4
+	SpoilerPopupTitle: uint; // index 0x5
+	SpoilerPopupDescription: uint; // index 0x6
+	PopupType: SpoilerPopupType; // index 0x7
 }
 
 table ArenaLevelSectionExcel {
@@ -8657,9 +8693,9 @@ table ContentsFeverExcel {
 
 table ContentSpoilerPopupExcel {
 	ContentType: ContentType; // index 0x1
-	SpoilerPopupTitle: string; // index 0x2
-	SpoilerPopupDescription: string; // index 0x3
-	IsWarningPopUp: bool; // index 0x4
+	SpoilerPopupTitle: uint; // index 0x2
+	SpoilerPopupDescription: uint; // index 0x3
+	PopupType: SpoilerPopupType; // index 0x4
 	ConditionScenarioModeId: long; // index 0x5
 }
 
@@ -9106,13 +9142,12 @@ table EventContentConcentrationRewardExcel {
 	EventContentId: long; // index 0x1
 	UniqueId: long; // index 0x2
 	ConcentrationRewardType: ConcentrationRewardType; // index 0x3
-	LocalizePrefabId: string; // index 0x4
-	Rarity: Rarity; // index 0x5
-	Round: int; // index 0x6
-	IsLoop: bool; // index 0x7
-	RewardParcelType: [ParcelType]; // index 0x8
-	RewardParcelId: [long]; // index 0x9
-	RewardParcelAmount: [int]; // index 0xA
+	Rarity: Rarity; // index 0x4
+	Round: int; // index 0x5
+	IsLoop: bool; // index 0x6
+	RewardParcelType: [ParcelType]; // index 0x7
+	RewardParcelId: [long]; // index 0x8
+	RewardParcelAmount: [int]; // index 0x9
 }
 
 table EventContentConcentrationVoiceExcel {
@@ -9483,9 +9518,9 @@ table EventContentSpineDisplayPeriodExcel {
 
 table EventContentSpoilerPopupExcel {
 	EventContentId: long; // index 0x1
-	SpoilerPopupTitle: string; // index 0x2
-	SpoilerPopupDescription: string; // index 0x3
-	IsWarningPopUp: bool; // index 0x4
+	SpoilerPopupTitle: uint; // index 0x2
+	SpoilerPopupDescription: uint; // index 0x3
+	PopupType: SpoilerPopupType; // index 0x4
 	ConditionScenarioModeId: long; // index 0x5
 }
 
@@ -10081,6 +10116,8 @@ table ItemExcel {
 	ExpirationNotifyDateIn: int; // index 0x1E
 	ShortcutTypeId: long; // index 0x1F
 	GachaTicket: GachaTicketType; // index 0x20
+	AlertPopupId: long; // index 0x21
+	ShiftingCraftRecipe: long; // index 0x22
 }
 
 table LevelExpMasterCoinExcel {
@@ -11121,6 +11158,14 @@ table MissionExcel {
 	MissionRewardAmount: [int]; // index 0x1C
 }
 
+table MomotalkScheduleSpoilerPopupExcel {
+	FavorScheduleId: long; // index 0x1
+	SpoilerPopupTitle: uint; // index 0x2
+	SpoilerPopupDescription: uint; // index 0x3
+	PopupType: SpoilerPopupType; // index 0x4
+	ConditionScenarioModeId: long; // index 0x5
+}
+
 table MultiFloorRaidRewardExcel {
 	RewardGroupId: long; // index 0x1
 	ClearStageRewardProb: long; // index 0x2
@@ -11272,6 +11317,16 @@ table PickupDuplicateBonusExcel {
 	RewardParcelAmount: long; // index 0x7
 }
 
+table PickupFirstGetBonus2Excel {
+	Id: long; // index 0x1
+	ShopRecruitId: long; // index 0x2
+	RecruitSellectionShopId: long; // index 0x3
+	PickupCharacterId: long; // index 0x4
+	RewardParcelType: ParcelType; // index 0x5
+	RewardParcelId: long; // index 0x6
+	RewardParcelAmount: long; // index 0x7
+}
+
 table PickupFirstGetBonusExcel {
 	ShopRecruitId: long; // index 0x1
 	RecruitSellectionShopId: long; // index 0x2
@@ -11351,6 +11406,34 @@ table ProductBattlePassExcel {
 	ParcelType: [ParcelType]; // index 0x8
 	ParcelId: [long]; // index 0x9
 	ParcelAmount: [long]; // index 0xA
+}
+
+table ProductDailyRecordExcel {
+	Id: long; // index 0x1
+	ProductId: string; // index 0x2
+	TeenProductId: string; // index 0x3
+	StoreType: StoreType; // index 0x4
+	Price: long; // index 0x5
+	PurchaseCountLimit: long; // index 0x6
+	RewardId: long; // index 0x7
+	ParcelType: [ParcelType]; // index 0x8
+	ParcelId: [long]; // index 0x9
+	ParcelAmount: [long]; // index 0xA
+	TitleImagePath: string; // index 0xB
+}
+
+table ProductDailyRecordInfoExcel {
+	Id: long; // index 0x1
+	DaySize: int; // index 0x2
+	ExpirationDate: string; // index 0x3
+}
+
+table ProductDailyRecordRewardExcel {
+	Id: long; // index 0x1
+	Day: int; // index 0x2
+	RewardParcelType: [ParcelType]; // index 0x3
+	RewardId: [long]; // index 0x4
+	RewardAmount: [long]; // index 0x5
 }
 
 table ProductExcel {
@@ -11682,6 +11765,16 @@ table ScenarioModeRewardExcel {
 	IsDisplayed: bool; // index 0x7
 }
 
+table ScenarioModeSpoilerPopupExcel {
+	ModeType: ScenarioModeTypes; // index 0x1
+	VolumeId: long; // index 0x2
+	ChapterId: long; // index 0x3
+	SpoilerPopupTitle: uint; // index 0x4
+	SpoilerPopupDescription: uint; // index 0x5
+	PopupType: SpoilerPopupType; // index 0x6
+	ConditionScenarioModeId: long; // index 0x7
+}
+
 table ScenarioResourceInfoExcel {
 	Id: long; // index 0x1
 	ScenarioModeId: long; // index 0x2
@@ -11778,8 +11871,12 @@ table ShiftingCraftRecipeExcel {
 	RequireItemId: long; // index 0x7
 	RequireItemAmount: long; // index 0x8
 	RequireGold: long; // index 0x9
-	IngredientTag: [Tag]; // index 0xA
-	IngredientExp: long; // index 0xB
+	AdditionalCostParcelType: ParcelType; // index 0xA
+	AdditionalCostParcelId: long; // index 0xB
+	AdditionalCostParcelAmount: long; // index 0xC
+	IngredientTag: [Tag]; // index 0xD
+	IngredientExp: long; // index 0xE
+	RecipeDisplayOptions: RecipeDisplayOptions; // index 0xF
 }
 
 table ShopCashExcel {
@@ -12304,14 +12401,15 @@ table WebEventSeasonExcel {
 	Id: long; // index 0x1
 	Enabled: bool; // index 0x2
 	IconOrder: long; // index 0x3
-	IsFull: bool; // index 0x4
-	UseExternalBrowser: bool; // index 0x5
-	StartDate: string; // index 0x6
-	EndDate: string; // index 0x7
-	LobbyBannerImage: string; // index 0x8
-	PopupTitleLocalizeKey: string; // index 0x9
-	StageEventUrl: string; // index 0xA
-	LiveEventUrl: string; // index 0xB
+	WebEventId: [long]; // index 0x4
+	IsFull: bool; // index 0x5
+	UseExternalBrowser: bool; // index 0x6
+	StartDate: string; // index 0x7
+	EndDate: string; // index 0x8
+	LobbyBannerImage: string; // index 0x9
+	PopupTitleLocalizeKey: string; // index 0xA
+	StageEventUrl: string; // index 0xB
+	LiveEventUrl: string; // index 0xC
 }
 
 table WeekDungeonExcel {
@@ -12472,7 +12570,6 @@ table WorldRaidStageRewardExcel {
 	ClearStageRewardProb: long; // index 0x3
 	ClearStageRewardParcelType: ParcelType; // index 0x4
 	ClearStageRewardParcelUniqueID: long; // index 0x5
-	ClearStageRewardParcelUniqueName: string; // index 0x6
-	ClearStageRewardAmount: long; // index 0x7
+	ClearStageRewardAmount: long; // index 0x6
 }
 
