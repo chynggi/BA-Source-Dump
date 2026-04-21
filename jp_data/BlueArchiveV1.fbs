@@ -367,7 +367,10 @@ enum ParcelType : int {
 	PossessionCheck = 23,
 	BattlePassExp = 24,
 	SelectedCharacter = 25,
-	UnSelectedCharacter = 26
+	UnSelectedCharacter = 26,
+	ProductBattlePass = 27,
+	ProductSelect = 28,
+	SNSPost = 29
 }
 
 enum StatType : int {
@@ -728,7 +731,9 @@ enum OpenConditionContent : int {
 	MinigameDreamMaker = 55,
 	MiniGameDefense = 56,
 	MiniGameCCG = 57,
-	Main_L_1_5 = 58
+	Main_L_1_5 = 58,
+	Main_SNS = 59,
+	PermanentRaid = 60
 }
 
 enum RecipeType : int {
@@ -841,7 +846,9 @@ enum DialogCategory : int {
 	UIAttendanceEvent19 = 74,
 	UIAttendanceEvent20 = 75,
 	UIAttendanceEvent21 = 76,
-	UIEventClueSearch = 77
+	UIEventClueSearch = 77,
+	UIWorkAronaWatering = 78,
+	UIWorkCoexist_PlanaWatchPot = 79
 }
 
 enum DialogType : int {
@@ -4002,7 +4009,8 @@ enum Club : int {
 	PrefectBrigade = 53,
 	FreeTradeCartel = 54,
 	NicomediasTroop = 55,
-	PublishingDepartment = 56
+	PublishingDepartment = 56,
+	FoxSquad = 57
 }
 
 enum School : int {
@@ -4857,6 +4865,13 @@ enum ScenarioModeTypes : int {
 	Prologue = 6
 }
 
+enum ScenarioModeSubTypes : int {
+	None = 0,
+	Club = 1,
+	Series1 = 2,
+	Series2 = 3
+}
+
 enum AccountState : int {
 	WaitingSignIn = 0,
 	Normal = 1,
@@ -4898,7 +4913,9 @@ enum ItemCategory : int {
 	Collectible = 5,
 	Favor = 6,
 	RecruitCoin = 7,
-	InvisibleToken = 8
+	InvisibleToken = 8,
+	BattlePass = 9,
+	ProductSelect = 10
 }
 
 enum Difficulty : int {
@@ -5706,11 +5723,6 @@ enum ScenarioBGScroll : int {
 	Horizontal = 2
 }
 
-enum ScenarioModeSubTypes : int {
-	None = 0,
-	Club = 1
-}
-
 enum ServiceActionType : int {
 	ClanCreate = 0,
 	HardAdventurePlayCountRecover = 1
@@ -5816,6 +5828,22 @@ enum ShopRefreshPeriodType : int {
 	Day = 1,
 	Week = 2,
 	Month = 3
+}
+
+enum GachaPhase : int {
+	GachaIntro = 0,
+	CharacterAppearance = 1,
+	SignatureIntro = 2,
+	SignatureWait = 3,
+	SignatureConfirm = 4,
+	Result = 5
+}
+
+enum DirectingCharacter : int {
+	None = 0,
+	Arona = 1,
+	Plana = 2,
+	Both = 3
 }
 
 enum GachaDisplayTag : int {
@@ -6355,6 +6383,8 @@ table ConstContentsExcelTable {
 table ConstContentsExcel {
 	UseSearchFieldOptimize: bool; // index 0x1
 	SearchUpdateTime: float; // index 0x2
+	LobbyDayTimeFrom: int; // index 0x3
+	LobbyNightTimeFrom: int; // index 0x4
 }
 
 table ConstEventCommonExcelTable {
@@ -7071,6 +7101,16 @@ table LocalizeFieldExcelTable {
 table LocalizeFieldExcel {
 	Key: uint; // index 0x1
 	Kr: string; // index 0x2
+	Jp: string; // index 0x3
+}
+
+table LocalizeSNSExcelTable {
+	DataList: [LocalizeSNSExcel]; // index 0x1
+}
+
+table LocalizeSNSExcel {
+	Key: uint; // index 0x1
+	kr: string; // index 0x2
 	Jp: string; // index 0x3
 }
 
@@ -8737,16 +8777,17 @@ table ContentsShortcutExcel {
 	ContentType: ContentType; // index 0x2
 	EventContentId: long; // index 0x3
 	ScenarioModeType: ScenarioModeTypes; // index 0x4
-	ScenarioModeVolume: long; // index 0x5
-	ScenarioModeChapter: long; // index 0x6
-	ShortcutOpenTime: string; // index 0x7
-	ShortcutCloseTime: string; // index 0x8
-	ConditionContentId: long; // index 0x9
-	ConquestMapDifficulty: StageDifficulty; // index 0xA
-	ConquestStepIndex: int; // index 0xB
-	ShortcutContentId: long; // index 0xC
-	ShortcutUIName: [string]; // index 0xD
-	Localize: string; // index 0xE
+	ScenarioModeSubType: ScenarioModeSubTypes; // index 0x5
+	ScenarioModeVolume: long; // index 0x6
+	ScenarioModeChapter: long; // index 0x7
+	ShortcutOpenTime: string; // index 0x8
+	ShortcutCloseTime: string; // index 0x9
+	ConditionContentId: long; // index 0xA
+	ConquestMapDifficulty: StageDifficulty; // index 0xB
+	ConquestStepIndex: int; // index 0xC
+	ShortcutContentId: long; // index 0xD
+	ShortcutUIName: [string]; // index 0xE
+	Localize: string; // index 0xF
 }
 
 table ContentTargetGroupExcel {
@@ -8963,6 +9004,12 @@ table EmblemExcel {
 	CheckPassType: EmblemCheckPassType; // index 0x14
 	EmblemParameter: long; // index 0x15
 	CheckPassCount: long; // index 0x16
+}
+
+table EquipmentChangePieceExcel {
+	EquipmentId: long; // index 0x1
+	ChangeEquipmentId: long; // index 0x2
+	ChangeAmount: long; // index 0x3
 }
 
 table EquipmentExcel {
@@ -9954,14 +10001,13 @@ table GoodsExcel {
 	ConsumeGachaTicketType: [GachaTicketType]; // index 0x9
 	ConsumeGachaTicketTypeAmount: [long]; // index 0xA
 	CombinedGachaCostId: long; // index 0xB
-	ProductIdAOS: long; // index 0xC
-	ProductIdiOS: long; // index 0xD
-	ConsumeExtraStep: [long]; // index 0xE
-	ConsumeExtraAmount: [long]; // index 0xF
-	State: int; // index 0x10
-	ParcelType: [ParcelType]; // index 0x11
-	ParcelId: [long]; // index 0x12
-	ParcelAmount: [long]; // index 0x13
+	ProductId: string; // index 0xC
+	ConsumeExtraStep: [long]; // index 0xD
+	ConsumeExtraAmount: [long]; // index 0xE
+	State: int; // index 0xF
+	ParcelType: [ParcelType]; // index 0x10
+	ParcelId: [long]; // index 0x11
+	ParcelAmount: [long]; // index 0x12
 }
 
 table GroundExcel {
@@ -10365,18 +10411,19 @@ table ItemExcel {
 	CanTierUpgrade: bool; // index 0x14
 	TierUpgradeRecipeCraftId: long; // index 0x15
 	Tags: [Tag]; // index 0x16
-	CraftQualityTier0: long; // index 0x17
-	CraftQualityTier1: long; // index 0x18
-	CraftQualityTier2: long; // index 0x19
-	ShiftingCraftQuality: long; // index 0x1A
-	MaxGiftTags: int; // index 0x1B
-	ShopCategory: [ShopCategoryType]; // index 0x1C
-	ExpirationDateTime: string; // index 0x1D
-	ExpirationNotifyDateIn: int; // index 0x1E
-	ShortcutTypeId: long; // index 0x1F
-	GachaTicket: GachaTicketType; // index 0x20
-	AlertPopupId: long; // index 0x21
-	ShiftingCraftRecipe: long; // index 0x22
+	isCollaboration: bool; // index 0x17
+	CraftQualityTier0: long; // index 0x18
+	CraftQualityTier1: long; // index 0x19
+	CraftQualityTier2: long; // index 0x1A
+	ShiftingCraftQuality: long; // index 0x1B
+	MaxGiftTags: int; // index 0x1C
+	ShopCategory: [ShopCategoryType]; // index 0x1D
+	ExpirationDateTime: string; // index 0x1E
+	ExpirationNotifyDateIn: int; // index 0x1F
+	ShortcutTypeId: long; // index 0x20
+	GachaTicket: GachaTicketType; // index 0x21
+	AlertPopupId: long; // index 0x22
+	ShiftingCraftRecipe: long; // index 0x23
 }
 
 table KeyMappingExcel {
@@ -10434,31 +10481,32 @@ table LocalizeCharProfileExcel {
 	PersonalNameJp: string; // index 0xC
 	PersonalNameRubyJp: string; // index 0xD
 	Club: Club; // index 0xE
-	SchoolYearKr: string; // index 0xF
-	SchoolYearJp: string; // index 0x10
-	CharacterAgeKr: string; // index 0x11
-	CharacterAgeJp: string; // index 0x12
-	BirthDay: string; // index 0x13
-	BirthdayKr: string; // index 0x14
-	BirthdayJp: string; // index 0x15
-	CharHeightKr: string; // index 0x16
-	CharHeightJp: string; // index 0x17
-	DesignerNameKr: string; // index 0x18
-	DesignerNameJp: string; // index 0x19
-	IllustratorNameKr: string; // index 0x1A
-	IllustratorNameJp: string; // index 0x1B
-	CharacterVoiceKr: string; // index 0x1C
-	CharacterVoiceJp: string; // index 0x1D
-	HobbyKr: string; // index 0x1E
-	HobbyJp: string; // index 0x1F
-	WeaponNameKr: string; // index 0x20
-	WeaponDescKr: string; // index 0x21
-	WeaponNameJp: string; // index 0x22
-	WeaponDescJp: string; // index 0x23
-	ProfileIntroductionKr: string; // index 0x24
-	ProfileIntroductionJp: string; // index 0x25
-	CharacterSSRNewKr: string; // index 0x26
-	CharacterSSRNewJp: string; // index 0x27
+	ClubNameForGachaJp: string; // index 0xF
+	SchoolYearKr: string; // index 0x10
+	SchoolYearJp: string; // index 0x11
+	CharacterAgeKr: string; // index 0x12
+	CharacterAgeJp: string; // index 0x13
+	BirthDay: string; // index 0x14
+	BirthdayKr: string; // index 0x15
+	BirthdayJp: string; // index 0x16
+	CharHeightKr: string; // index 0x17
+	CharHeightJp: string; // index 0x18
+	DesignerNameKr: string; // index 0x19
+	DesignerNameJp: string; // index 0x1A
+	IllustratorNameKr: string; // index 0x1B
+	IllustratorNameJp: string; // index 0x1C
+	CharacterVoiceKr: string; // index 0x1D
+	CharacterVoiceJp: string; // index 0x1E
+	HobbyKr: string; // index 0x1F
+	HobbyJp: string; // index 0x20
+	WeaponNameKr: string; // index 0x21
+	WeaponDescKr: string; // index 0x22
+	WeaponNameJp: string; // index 0x23
+	WeaponDescJp: string; // index 0x24
+	ProfileIntroductionKr: string; // index 0x25
+	ProfileIntroductionJp: string; // index 0x26
+	CharacterSSRNewKr: string; // index 0x27
+	CharacterSSRNewJp: string; // index 0x28
 }
 
 table LocalizeCodeInBuildExcel {
@@ -11476,7 +11524,8 @@ table ParcelAutoSynthExcel {
 table PermanentRaidManageExcel {
 	Type: RaidBossGroupType; // index 0x1
 	OpenRaidBossGroup: [string]; // index 0x2
-	OpenDate: string; // index 0x3
+	HideDifficulty: [string]; // index 0x3
+	OpenDate: string; // index 0x4
 }
 
 table PersonalityExcel {
@@ -11901,25 +11950,27 @@ table ScenarioModeExcel {
 	ClearedModeId: [long]; // index 0x12
 	ScenarioModeRewardId: long; // index 0x13
 	IsScenarioSpecialReward: bool; // index 0x14
-	AccountLevelLimit: long; // index 0x15
-	ClearedStageId: long; // index 0x16
-	NeedClub: Club; // index 0x17
-	NeedClubStudentCount: int; // index 0x18
-	EventContentId: long; // index 0x19
-	EventContentType: EventContentType; // index 0x1A
-	EventContentCondition: long; // index 0x1B
-	EventContentConditionGroup: long; // index 0x1C
-	MapDifficulty: StageDifficulty; // index 0x1D
-	StepIndex: int; // index 0x1E
-	RecommendLevel: int; // index 0x1F
-	EventIconParcelPath: string; // index 0x20
-	EventBannerTitle: uint; // index 0x21
-	lof: bool; // index 0x22
-	StageTopography: StageTopography; // index 0x23
-	FixedEchelonId: long; // index 0x24
-	CompleteReportEventName: string; // index 0x25
-	EchelonExtensionType: EchelonExtensionType; // index 0x26
-	CollectionGroupId: long; // index 0x27
+	SpecialRewardPrefabName: string; // index 0x15
+	SpecialRewardLogOut: bool; // index 0x16
+	AccountLevelLimit: long; // index 0x17
+	ClearedStageId: long; // index 0x18
+	NeedClub: Club; // index 0x19
+	NeedClubStudentCount: int; // index 0x1A
+	EventContentId: long; // index 0x1B
+	EventContentType: EventContentType; // index 0x1C
+	EventContentCondition: long; // index 0x1D
+	EventContentConditionGroup: long; // index 0x1E
+	MapDifficulty: StageDifficulty; // index 0x1F
+	StepIndex: int; // index 0x20
+	RecommendLevel: int; // index 0x21
+	EventIconParcelPath: string; // index 0x22
+	EventBannerTitle: uint; // index 0x23
+	lof: bool; // index 0x24
+	StageTopography: StageTopography; // index 0x25
+	FixedEchelonId: long; // index 0x26
+	CompleteReportEventName: string; // index 0x27
+	EchelonExtensionType: EchelonExtensionType; // index 0x28
+	CollectionGroupId: long; // index 0x29
 }
 
 table ScenarioModeRewardExcel {
@@ -11934,12 +11985,13 @@ table ScenarioModeRewardExcel {
 
 table ScenarioModeSpoilerPopupExcel {
 	ModeType: ScenarioModeTypes; // index 0x1
-	VolumeId: long; // index 0x2
-	ChapterId: long; // index 0x3
-	SpoilerPopupTitle: uint; // index 0x4
-	SpoilerPopupDescription: uint; // index 0x5
-	PopupType: SpoilerPopupType; // index 0x6
-	ConditionScenarioModeId: long; // index 0x7
+	SubType: ScenarioModeSubTypes; // index 0x2
+	VolumeId: long; // index 0x3
+	ChapterId: long; // index 0x4
+	SpoilerPopupTitle: uint; // index 0x5
+	SpoilerPopupDescription: uint; // index 0x6
+	PopupType: SpoilerPopupType; // index 0x7
+	ConditionScenarioModeId: long; // index 0x8
 }
 
 table ScenarioResourceInfoExcel {
@@ -11954,7 +12006,10 @@ table ScenarioResourceInfoExcel {
 	Ratio: int; // index 0x9
 	LobbyAniPath: string; // index 0xA
 	MovieCGPath: string; // index 0xB
-	LocalizeId: uint; // index 0xC
+	ScenarioForceEnter: ScenarioModeSubTypes; // index 0xC
+	LocalizeId: uint; // index 0xD
+	AcademyLobbyCharacterId: [long]; // index 0xE
+	SweepAnimation: [string]; // index 0xF
 }
 
 table ScenarioScriptExcel {
@@ -12146,6 +12201,14 @@ table ShopInfoExcel {
 	ShopUpdateGroupId12: int; // index 0x1F
 }
 
+table ShopRecruitDirectingExcel {
+	Path: string; // index 0x1
+	Phase: GachaPhase; // index 0x2
+	GachaAmount: int; // index 0x3
+	IsSSR: bool; // index 0x4
+	Character: DirectingCharacter; // index 0x5
+}
+
 table ShopRecruitExcel {
 	Id: long; // index 0x1
 	CategoryType: ShopCategoryType; // index 0x2
@@ -12170,10 +12233,20 @@ table ShopRecruitExcel {
 	IsNewbie: bool; // index 0x15
 	IsSelectRecruit: bool; // index 0x16
 	DirectPayInvisibleTokenId: long; // index 0x17
-	DirectPayAndroidShopCashId: long; // index 0x18
-	DirectPayAppleShopCashId: long; // index 0x19
-	SelectAbleGachaGroupId: long; // index 0x1A
-	MaxSelectCharacterNum: long; // index 0x1B
+	DirectPayProductId: string; // index 0x18
+	SelectAbleGachaGroupId: long; // index 0x19
+	MaxSelectCharacterNum: long; // index 0x1A
+}
+
+table ShopRecruitSettingExcel {
+	Id: long; // index 0x1
+	RecruitChangeScenarioModeID: long; // index 0x2
+	PriorityOrder: long; // index 0x3
+	TogetherPercentage: int; // index 0x4
+	AnotherPercentage: int; // index 0x5
+	TwistPercentage: int; // index 0x6
+	RecruitChangeIcon: string; // index 0x7
+	SeriesForceEnter: ScenarioModeSubTypes; // index 0x8
 }
 
 table ShopRefreshExcel {
@@ -12250,6 +12323,39 @@ table SkillSelectExTooltipExcel {
 	GroupId: long; // index 0x1
 	SelectableExSkillGroupId: string; // index 0x2
 	SkillUseConditionLocalizeId: string; // index 0x3
+}
+
+table SNSInfoExcel {
+	Id: long; // index 0x1
+	OpenScenarioModeId: long; // index 0x2
+	CloseScenarioModeId: long; // index 0x3
+	OpenTitleLocalizeKey: uint; // index 0x4
+	CloseTitleLocalizeKey: uint; // index 0x5
+	OpenDescLocalizeKey: uint; // index 0x6
+	CloseDescLocalizeKey: uint; // index 0x7
+}
+
+table SNSPostExcel {
+	Id: long; // index 0x1
+	SNSInfoId: long; // index 0x2
+	MasterPostId: long; // index 0x3
+	RepostSNSProfileId: long; // index 0x4
+	SNSProfileId: long; // index 0x5
+	PostTextLocalizeKey: uint; // index 0x6
+	PostImagePath: [string]; // index 0x7
+	RepostMinNum: long; // index 0x8
+	RepostMaxNum: long; // index 0x9
+	FavorMinNum: long; // index 0xA
+	FavorMaxNum: long; // index 0xB
+}
+
+table SNSProfileExcel {
+	Id: long; // index 0x1
+	DevName: string; // index 0x2
+	ProfileImagePath: string; // index 0x3
+	NameLocalizeKey: uint; // index 0x4
+	IdLocalizeKey: uint; // index 0x5
+	MarkIconVisible: bool; // index 0x6
 }
 
 table SoundUIExcel {
