@@ -5,13 +5,17 @@ import shutil
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
+from lib.ApkProviderFetcher import APK_HEADERS
+
+
 class FileDownloader:
-    def __init__(self, url, download_dir, filename):
+    def __init__(self, url, download_dir, filename, extra_headers=None):
         self.url = url
         self.local_filepath = os.path.join(download_dir, filename)
         os.makedirs(download_dir, exist_ok=True)
         self.scraper = cloudscraper.create_scraper()
-        
+        self.headers = {**APK_HEADERS, **(extra_headers or {})}
+
         cpu_threads = os.cpu_count() or 1
         if cpu_threads >= 4:
             self.thread_count = cpu_threads // 2
@@ -20,7 +24,7 @@ class FileDownloader:
 
     def download(self):
         try:
-            head = self.scraper.head(self.url, allow_redirects=True, timeout=10)
+            head = self.scraper.head(self.url, headers=self.headers, allow_redirects=True, timeout=10)
             total_size = int(head.headers.get('content-length', 0))
             accept_ranges = head.headers.get('Accept-Ranges', '').lower()
 
@@ -33,10 +37,10 @@ class FileDownloader:
             return self._standard_download()
 
     def _standard_download(self):
-        r = self.scraper.get(self.url, stream=True, allow_redirects=True)
+        r = self.scraper.get(self.url, headers=self.headers, stream=True, allow_redirects=True)
         r.raise_for_status()
         total = int(r.headers.get('content-length', 0))
-        
+
         with tqdm.wrapattr(r.raw, "read", total=total, desc="Standard") as stream:
             with open(self.local_filepath, 'wb') as f:
                 shutil.copyfileobj(stream, f)
@@ -61,7 +65,7 @@ class FileDownloader:
         return True
 
     def _download_chunk(self, start, end, pbar):
-        headers = {'Range': f'bytes={start}-{end}'}
+        headers = {**self.headers, 'Range': f'bytes={start}-{end}'}
         resp = self.scraper.get(self.url, headers=headers, stream=True)
         with open(self.local_filepath, 'rb+') as f:
             f.seek(start)
