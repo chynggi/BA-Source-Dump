@@ -8,3 +8,4 @@ __pycache__
 tools
 apk_downloads
 api_data.json
+sqlcipher_key.txt

@@ -13,13 +13,13 @@ if __name__ == "__main__":
         description="Dump JP Version"
     )
     parser.add_argument(
-        "--sql-cipher-url",
+        "--sql-cipher-file",
         required=False,
-        default=None,
-        help="SQL Cipher Key URL (default: None)",
+        default="sqlcipher_key.txt",
+        help="Path to sqlcipher key file (default: sqlcipher_key.txt)",
     )
     args = parser.parse_args()
-    sql_cipher_url = args.sql_cipher_url
+    sql_cipher_file = args.sql_cipher_file
     
     os_system = platform.system()
     tools_dir = os.path.join(os.getcwd(), f'tools')
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         "AddressableVersion": addressGameVersion,
         "AddressableBuildVersion": addressUrl.split('/')[-1],
         "AddressableUrl": addressUrl,
-        "SQLCipherKey": get_sql_cipher_key(sql_cipher_url, gateway_url, bundle_version)
+        "SQLCipherKey": get_sql_cipher_key(sql_cipher_file)
     }
 
     with open(metadata_file_path, 'w', encoding='utf-8') as file:
