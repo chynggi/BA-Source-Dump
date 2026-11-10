@@ -1,10 +1,10 @@
 {
     "api_version": "v1.1",
     "market_game_id": "com.nexon.bluearchive",
-    "latest_build_version": "1.93.454564",
-    "latest_build_number": "454564",
-    "min_build_version": "1.93.452511",
-    "min_build_number": "452511",
+    "latest_build_version": "1.96.474931",
+    "latest_build_number": "474931",
+    "min_build_version": "1.96.474931",
+    "min_build_number": "474931",
     "patch": {
         "patch_version": 1771,
         "resource_path": "https://ba.dn.nexoncdn.co.kr/com.nexon.bluearchive/1b711e764e8a473f/resource-data.json",
